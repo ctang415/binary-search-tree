@@ -59,7 +59,7 @@
                     return this.arr = array
                 }
             }
-            buildTree(arr, start, end) {
+            buildTree(arr, start = 0, end = arr.length-1) {
             if (start > end) {
                 return null;
             }
@@ -67,11 +67,21 @@
                 let node = new Node(arr[mid]);
                 node.left = this.buildTree(arr, start, mid-1);
                 node.right = this.buildTree(arr, mid+1, end);
-                return node;
+                return this.root = node;
+            }
+             prettyPrint = (node, prefix = '', isLeft = true) => {
+            if (node.right) {
+                this.prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+            }
+                console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+            if (node.left) {
+                this.prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+            }
         }
     }
 
-        let myarray = [5, 11, 2, 6, 13, 8, 1, 15, 15]
+
+        let myarray = [5, 11, 2, 6, 13, 8, 1, 15, 15, 23]
     </script>
 </body>
 </html>
