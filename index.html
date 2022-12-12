@@ -78,10 +78,24 @@
                 this.prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
             }
         }
+        findValue(root, value) {
+            if (root.data == null || root.data == value) {
+                return root
+            }
+            if (root.data < value && root.right !== null) {
+                return this.findValue(root.right, value)
+            } 
+            if (root.data > value && root.left !== null) {
+                return this.findValue(root.left, value)
+            } 
+            return null;
+        }
     }
 
-
-        let myarray = [5, 11, 2, 6, 13, 8, 1, 15, 15, 23]
+  let myarray = [5, 11, 2, 6, 13, 8, 1, 15, 15, 23]
+  let tree = new Tree;
+  tree.removeDupes(myarray);
+  tree.sortArray(tree.arr)
     </script>
 </body>
 </html>
