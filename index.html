@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Search Tree</title>
+</head>
+<body>
+    <script>
+        class Node {
+            constructor(data) {
+                this.data = data;
+                this.left = null;
+                this.right = null;
+            }
+        }
+        
+        class Tree {
+            constructor(arr) {
+                this.arr = arr
+                this.root = null;
+            }
+            removeDupes(arr) {
+                let array = [];
+                arr.forEach(element => {
+                    if(!array.includes(element)) {
+                        array.push(element)
+                    }
+                });
+                return this.arr = array;
+            }
+            sortArray(arr) {
+                if (arr.length < 2) {
+                    return arr
+                } else {
+                    let half = arr.length/2
+                    let left = this.sortArray(arr.slice(0, half))
+                    let right = this.sortArray(arr.slice(half))
+                    let array = [];
+                    let [i, j] = [0, 0];
+                    while (i < left.length || j < right.length) {
+                        if (left[i] < right[j]) {
+                            array.push(left[i])
+                            i++;
+                        } else {
+                            array.push(right[j])
+                            j++
+                        }
+                        if (left.length === i) {
+                            array = array.concat(right.slice(j))
+                            break;
+                        }
+                        if (right.length === j) {
+                            array = array.concat(left.slice(i))
+                            break;
+                        }
+                    }
+                    return this.arr = array
+                }
+            }
+            buildTree(arr, start, end) {
+            if (start > end) {
+                return null;
+            }
+                let mid = Math.floor((start + end)/2);
+                let node = new Node(arr[mid]);
+                node.left = this.buildTree(arr, start, mid-1);
+                node.right = this.buildTree(arr, mid+1, end);
+                return node;
+        }
+    }
+
+        let myarray = [5, 11, 2, 6, 13, 8, 1, 15, 15]
+    </script>
+</body>
+</html>
