@@ -90,6 +90,20 @@
             } 
             return null;
         }
+        insertValue(root, value) {
+            if (root.data < value && root.right == null) {
+                return root.right = new Node(value);
+            }
+            if (root.data > value && root.left == null) {
+                return root.left = new Node(value);
+            }
+            if (root.data < value) {
+                return this.insertValue(root.right, value)
+            }
+             if (root.data > value) {
+                return this.insertValue(root.left, value)
+             }   
+            }
     }
 
   let myarray = [5, 11, 2, 6, 13, 8, 1, 15, 15, 23]
