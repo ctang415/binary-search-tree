@@ -79,7 +79,7 @@
             }
         }
         findValue(root, value) {
-            if (root.data == null || root.data == value) {
+            if (root == null || root.data == value) {
                 return root
             }
             if (root.data < value && root.right !== null) {
@@ -90,7 +90,11 @@
             } 
             return null;
         }
-        insertValue(root, value) {
+        insertNode(root, value) {
+            if (root == null) {
+                root = new Node(value);
+                return root;
+            }
             if (root.data < value && root.right == null) {
                 return root.right = new Node(value);
             }
@@ -98,18 +102,51 @@
                 return root.left = new Node(value);
             }
             if (root.data < value) {
-                return this.insertValue(root.right, value)
+                return this.insertNode(root.right, value)
             }
              if (root.data > value) {
-                return this.insertValue(root.left, value)
+                return this.insertNode(root.left, value)
              }   
+        }
+        deleteNode(root, value) {
+            if (root == null) {
+                return root;
+        }
+        if (root.data == value) {
+            if (root.left == null && root.right == null) {
+                return console.log(null)
+            } else if (root.left == null) {
+                return root.right;
+            } else if (root.right == null) {
+                return root.left;
+            } else {
+                let temp = this.minValue(root.right)
+                root.data = temp.data;
+                root.right = this.deleteNode(root.right, temp.data)
+                return root;
             }
+        } else if (root.data < value) {
+            root.right = this.deleteNode(root.right, value)
+            return root;
+        } else {
+            root.left = this.deleteNode(root.left, value)
+            return root;
+        }
+            return console.log(null)
+        }
+        minValue(root) {
+            while (root.left !== null) {
+                root = root.left;
+            }
+            return root;
+        }
     }
 
   let myarray = [5, 11, 2, 6, 13, 8, 1, 15, 15, 23]
   let tree = new Tree;
   tree.removeDupes(myarray);
   tree.sortArray(tree.arr)
+  tree.buildTree(tree.arr)
     </script>
 </body>
 </html>
