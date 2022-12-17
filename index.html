@@ -207,11 +207,17 @@
         }
         return anarray;
     }
-    postOrder(root, anarray =[]) {
-
+    postOrder(root, anarray = []) {
+        if (root !== null) {
+            this.postOrder(root.left, anarray)
+            this.postOrder(root.right, anarray)
+            anarray.push(root.data)
+        } else {
+            return
+        }
+        return anarray;
     }
 }
-    
     
     
 
