@@ -155,8 +155,8 @@
             }
             return arrayOfValues
         }
-        levelOrderFunc(root, multiplyByTwo) {
-            if (!multiplyByTwo) {
+        levelOrderFunc(root, callback) {
+            if (!callback) {
                 let queue = [];
                 let arrayOfValues = [];
                 queue.push(root)
@@ -179,13 +179,17 @@
                     let temp = queue.shift()
                     if (temp.left !== null) {
                         queue.push(temp.left)
-                }
+                    }
                     if (temp.right !== null) {
                         queue.push(temp.right)
+                    }
+                     arrayOfValues.push(callback(temp.data))
                 }
-                return multiplyByTwo(x * 2)
+                return arrayOfValues
             }
         }
+    multiplyByTwo(x) {
+         return x * 2
     }
     inOrder(root, anarray = []) {
         if (root !== null) {
@@ -216,6 +220,9 @@
             return
         }
         return anarray;
+    }
+    height() {
+
     }
 }
     
