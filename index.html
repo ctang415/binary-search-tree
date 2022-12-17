@@ -197,6 +197,19 @@
         }
         return anarray;
     }
+    preOrder(root, anarray= []) {
+        if (root !== null) {
+            anarray.push(root.data)
+            this.preOrder(root.left, anarray)
+            this.preOrder(root.right, anarray)
+        } else {
+            return
+        }
+        return anarray;
+    }
+    postOrder(root, anarray =[]) {
+
+    }
 }
     
     
