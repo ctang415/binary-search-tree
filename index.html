@@ -191,7 +191,8 @@
     multiplyByTwo(x) {
          return x * 2
     }
-    inOrder(root, anarray = []) {
+    inOrder(root, anarray = [], callback) {
+        if (!callback) {
         if (root !== null) {
             this.inOrder(root.left, anarray)
             anarray.push(root.data)
@@ -200,8 +201,19 @@
             return
         }
         return anarray;
+    } else {
+        if (root !== null) {
+            this.inOrder(root.left, anarray, callback)
+            anarray.push(callback(root.data))
+            this.inOrder(root.right, anarray, callback)
+        } else {
+            return
+        }
+        return anarray;
     }
-    preOrder(root, anarray= []) {
+    }
+    preOrder(root, anarray= [], callback) {
+        if (!callback) {
         if (root !== null) {
             anarray.push(root.data)
             this.preOrder(root.left, anarray)
@@ -210,8 +222,19 @@
             return
         }
         return anarray;
+    } else {
+        if (root !== null) {
+            anarray.push(callback(root.data))
+            this.preOrder(root.left, anarray, callback)
+            this.preOrder(root.right, anarray, callback)
+        } else {
+            return
+        }
+        return anarray;
     }
-    postOrder(root, anarray = []) {
+}
+    postOrder(root, anarray = [], callback) {
+        if (!callback) {
         if (root !== null) {
             this.postOrder(root.left, anarray)
             this.postOrder(root.right, anarray)
@@ -220,7 +243,17 @@
             return
         }
         return anarray;
+    } else {
+        if (root !== null) {
+            this.postOrder(root.left, anarray, callback)
+            this.postOrder(root.right, anarray, callback)
+            anarray.push(callback(root.data))
+        } else {
+            return
+        }
+        return anarray;
     }
+}
     height() {
 
     }
