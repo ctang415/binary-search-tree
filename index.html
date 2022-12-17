@@ -155,15 +155,54 @@
             }
             return arrayOfValues
         }
-
+        levelOrderFunc(root, multiplyByTwo) {
+            if (!multiplyByTwo) {
+                let queue = [];
+                let arrayOfValues = [];
+                queue.push(root)
+                while (queue.length !== 0) {
+                    let temp = queue.shift()
+                    if (temp.left !== null) {
+                        queue.push(temp.left)
+                    }
+                    if (temp.right !== null) {
+                        queue.push(temp.right)
+                    }
+                    arrayOfValues.push(temp.data)
+                }
+                return arrayOfValues
+            } else {
+                let queue = [];
+                let arrayOfValues = [];
+                queue.push(root)
+                while (queue.length !== 0) {
+                    let temp = queue.shift()
+                    if (temp.left !== null) {
+                        queue.push(temp.left)
+                }
+                    if (temp.right !== null) {
+                        queue.push(temp.right)
+                }
+                return multiplyByTwo(x * 2)
+            }
+        }
     }
-    
-    
+    inOrder(root, anarray = []) {
+        if (root !== null) {
+            this.inOrder(root.left, anarray)
+            anarray.push(root.data)
+            this.inOrder(root.right, anarray)
+        } else {
+            return
+        }
+        return anarray;
+    }
+}
     
     
     
 
-  let myarray = [5, 11, 2, 6, 13, 8, 1, 15, 15, 23]
+  let myarray = [5, 11, 2, 6, 13, 8, 1, 15, 15, 23, 19]
   let tree = new Tree;
   tree.removeDupes(myarray);
   tree.sortArray(tree.arr)
