@@ -254,14 +254,26 @@
         return anarray;
     }
 }
-    height() {
-
-    }
+    height(root) {
+        if (root == null) {
+            return -1
+        } 
+            let left = this.height(root.left)
+            console.log(left)
+            let right = this.height(root.right)
+            console.log(right)
+            if (left > right) {
+                return left + 1
+            } else {
+                return right + 1
+            }
+        }
 }
+        
     
     
 
-  let myarray = [5, 11, 2, 6, 13, 8, 1, 15, 15, 23, 19]
+ let myarray = [5, 11, 2, 6, 13, 8, 1, 15, 15, 23, 19]
   let tree = new Tree;
   tree.removeDupes(myarray);
   tree.sortArray(tree.arr)
