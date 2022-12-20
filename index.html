@@ -82,9 +82,9 @@
             if (root == null || root.data == value) {
                 return root
             }
-            if (root.data < value && root.right !== null) {
+            if (root.data < value) {
                  return this.findValue(root.right, value)
-            } else if (root.data > value && root.left !== null) {
+            } else if (root.data > value) {
                   return this.findValue(root.left, value)
             } 
             return null;
@@ -188,84 +188,104 @@
                 return arrayOfValues
             }
         }
-    multiplyByTwo(x) {
-         return x * 2
+        multiplyByTwo(x) {
+            return x * 2
     }
-    inOrder(root, anarray = [], callback) {
-        if (!callback) {
-        if (root !== null) {
-            this.inOrder(root.left, anarray)
-            anarray.push(root.data)
-            this.inOrder(root.right, anarray)
-        } else {
-            return
+        inOrder(root, anarray = [], callback) {
+            if (!callback) {
+            if (root !== null) {
+                this.inOrder(root.left, anarray)
+                anarray.push(root.data)
+                this.inOrder(root.right, anarray)
+            } else {
+                return
+            }   
+            return anarray;
+            } else {
+            if (root !== null) {
+                this.inOrder(root.left, anarray, callback)
+                anarray.push(callback(root.data))
+                this.inOrder(root.right, anarray, callback)
+            } else {
+                return
+            }
+            return anarray;
+            }
         }
-        return anarray;
-    } else {
-        if (root !== null) {
-            this.inOrder(root.left, anarray, callback)
-            anarray.push(callback(root.data))
-            this.inOrder(root.right, anarray, callback)
+        preOrder(root, anarray= [], callback) {
+            if (!callback) {
+            if (root !== null) {
+                anarray.push(root.data)
+                this.preOrder(root.left, anarray)
+                this.preOrder(root.right, anarray)
+            } else {
+                return
+            }
+            return anarray;
         } else {
-            return
+            if (root !== null) {
+                anarray.push(callback(root.data))
+                this.preOrder(root.left, anarray, callback)
+                this.preOrder(root.right, anarray, callback)
+            } else {
+                return
+            }
+            return anarray;
+            }
         }
-        return anarray;
-    }
-    }
-    preOrder(root, anarray= [], callback) {
-        if (!callback) {
-        if (root !== null) {
-            anarray.push(root.data)
-            this.preOrder(root.left, anarray)
-            this.preOrder(root.right, anarray)
+        postOrder(root, anarray = [], callback) {
+            if (!callback) {
+            if (root !== null) {
+                this.postOrder(root.left, anarray)
+                this.postOrder(root.right, anarray)
+                anarray.push(root.data)
+            } else {
+                return
+            }
+            return anarray;
         } else {
-            return
+            if (root !== null) {
+                this.postOrder(root.left, anarray, callback)
+                this.postOrder(root.right, anarray, callback)
+                anarray.push(callback(root.data))
+            } else {
+                return
+            }
+            return anarray;
+            }
         }
-        return anarray;
-    } else {
-        if (root !== null) {
-            anarray.push(callback(root.data))
-            this.preOrder(root.left, anarray, callback)
-            this.preOrder(root.right, anarray, callback)
-        } else {
-            return
-        }
-        return anarray;
-    }
-}
-    postOrder(root, anarray = [], callback) {
-        if (!callback) {
-        if (root !== null) {
-            this.postOrder(root.left, anarray)
-            this.postOrder(root.right, anarray)
-            anarray.push(root.data)
-        } else {
-            return
-        }
-        return anarray;
-    } else {
-        if (root !== null) {
-            this.postOrder(root.left, anarray, callback)
-            this.postOrder(root.right, anarray, callback)
-            anarray.push(callback(root.data))
-        } else {
-            return
-        }
-        return anarray;
-    }
-}
-    height(root) {
+        heightOfTree(root) {
         if (root == null) {
             return -1
         } 
-            let left = this.height(root.left)
-            console.log(left)
-            let right = this.height(root.right)
-            console.log(right)
+            let left = this.heightOfTree(root.left)
+            let right = this.heightOfTree(root.right)
             if (left > right) {
                 return left + 1
             } else {
                 return right + 1
+            }
+            return
+        }
+        depthOfNode(root, value) {
+            if (root == null) {
+                return -1
+            }
+            if (root.data == value) {
+                return 0
+            }
+            if (root.data > value) {
+                return this.depthOfNode(root.left, value) + 1
+            }
+            else if (root.data < value) {
+                 return this.depthOfNode(root.right, value) + 1
+            }
+            return null
+        }
+
+        heightOfNode(root, value) {
+            if (root == null) {
+                return -1
             }
         }
 }
