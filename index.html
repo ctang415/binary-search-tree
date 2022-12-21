@@ -94,16 +94,16 @@
                 root = new Node(value);
                 return root;
             }
-            if (root.data < value && root.right == null) {
+            if (root.data <= value && root.right == null) {
                 return root.right = new Node(value);
             }
-            if (root.data > value && root.left == null) {
+            if (root.data >= value && root.left == null) {
                 return root.left = new Node(value);
             }
-            if (root.data < value) {
+            if (root.data <= value) {
                 return this.insertNode(root.right, value)
             }
-             if (root.data > value) {
+             if (root.data >= value) {
                 return this.insertNode(root.left, value)
              }   
         }
@@ -289,6 +289,9 @@
             return null
         }
         isBalanced(root) {
+            if (root == null) {
+                return
+            }
             if (this.heightOfTree(root.left) > this.heightOfNode(root.right)) {
                 let difference = (this.heightOfTree(root.left) - this.heightOfTree(root.right))
                 if (difference > 1) {
@@ -305,15 +308,28 @@
                 }
             }
         }
+        rebalanceTree(root) {
+            if (root == null) {
+                return null
+            }
+            if (this.isBalanced(root) === false) {
+                let rebalancedTree = this.inOrder(root)
+                this.buildTree(rebalancedTree)
+                return this.prettyPrint(this.buildTree(rebalancedTree))
+            }
+            else {
+                return null
+            }
+        }
 }
         
     
     
- let myarray = [9, 7, 2, 3, 11, 12, 0, 22, 4, 1]
- //let myarray = [5, 11, 2, 6, 13, 8, 1, 15, 15, 23, 19]
+
+ let myarray = [5, 11, 2, 6, 13, 8, 1, 15, 15, 23, 19]
   let tree = new Tree;
   tree.removeDupes(myarray);
-  //tree.sortArray(tree.arr)
+  tree.sortArray(tree.arr)
   tree.buildTree(tree.arr)
     </script>
 </body>
