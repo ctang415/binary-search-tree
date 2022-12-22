@@ -78,85 +78,68 @@
                 this.prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
             }
         }
-        findValue(root, value) {
-            if (root == null || root.data == value) {
-                return root
+            findValue(root, value) {
+                if (root == null || root.data == value) {
+                    return root
+                }
+                if (root.data < value) {
+                    return this.findValue(root.right, value)
+                } else if (root.data > value) {
+                    return this.findValue(root.left, value)
+                } 
+                    return null;
             }
-            if (root.data < value) {
-                 return this.findValue(root.right, value)
-            } else if (root.data > value) {
-                  return this.findValue(root.left, value)
-            } 
-            return null;
-        }
-        insertNode(root, value) {
-            if (root == null) {
-                root = new Node(value);
+            insertNode(root, value) {
+                if (root == null) {
+                    root = new Node(value);
+                    return root;
+                }
+                if (root.data <= value && root.right == null) {
+                    return root.right = new Node(value);
+                }
+                if (root.data >= value && root.left == null) {
+                    return root.left = new Node(value);
+                }
+                if (root.data <= value) {
+                    return this.insertNode(root.right, value)
+                }
+                if (root.data >= value) {
+                    return this.insertNode(root.left, value)
+                }   
+            }
+            deleteNode(root, value) {
+                if (root == null) {
+                    return root;
+            }
+            if (root.data == value) {
+                if (root.left == null && root.right == null) {
+                    return null
+                } else if (root.left == null) {
+                    return root.right;
+                } else if (root.right == null) {
+                    return root.left;
+                } else {
+                    let temp = this.minValue(root.right)
+                    root.data = temp.data;
+                    root.right = this.deleteNode(root.right, temp.data)
+                    return root;
+                }
+            } else if (root.data < value) {
+                root.right = this.deleteNode(root.right, value)
                 return root;
-            }
-            if (root.data <= value && root.right == null) {
-                return root.right = new Node(value);
-            }
-            if (root.data >= value && root.left == null) {
-                return root.left = new Node(value);
-            }
-            if (root.data <= value) {
-                return this.insertNode(root.right, value)
-            }
-             if (root.data >= value) {
-                return this.insertNode(root.left, value)
-             }   
-        }
-        deleteNode(root, value) {
-            if (root == null) {
-                return root;
-        }
-        if (root.data == value) {
-            if (root.left == null && root.right == null) {
-                return null
-            } else if (root.left == null) {
-                return root.right;
-            } else if (root.right == null) {
-                return root.left;
             } else {
-                let temp = this.minValue(root.right)
-                root.data = temp.data;
-                root.right = this.deleteNode(root.right, temp.data)
+                root.left = this.deleteNode(root.left, value)
                 return root;
             }
-        } else if (root.data < value) {
-            root.right = this.deleteNode(root.right, value)
-            return root;
-        } else {
-            root.left = this.deleteNode(root.left, value)
-            return root;
-        }
-            return console.log(null)
-        }
-        minValue(root) {
-            while (root.left !== null) {
-                root = root.left;
+                return console.log(null)
             }
-            return root;
-        }
-        levelOrder = (root) => {
-            let queue = [];
-            let arrayOfValues = [];
-            queue.push(root)
-            while (queue.length !== 0) {
-                let temp = queue.shift()
-                if (temp.left !== null) {
-                    queue.push(temp.left)
+            minValue(root) {
+                while (root.left !== null) {
+                    root = root.left;
                 }
-                if (temp.right !== null) {
-                    queue.push(temp.right)
-                }
-                arrayOfValues.push(temp.data)
+                return root;
             }
-            return arrayOfValues
-        }
-        levelOrderFunc(root, callback) {
-            if (!callback) {
+            levelOrder = (root) => {
                 let queue = [];
                 let arrayOfValues = [];
                 queue.push(root)
@@ -171,166 +154,219 @@
                     arrayOfValues.push(temp.data)
                 }
                 return arrayOfValues
-            } else {
-                let queue = [];
-                let arrayOfValues = [];
-                queue.push(root)
-                while (queue.length !== 0) {
-                    let temp = queue.shift()
-                    if (temp.left !== null) {
-                        queue.push(temp.left)
+            }
+            levelOrderFunc(root, callback) {
+                if (!callback) {
+                    let queue = [];
+                    let arrayOfValues = [];
+                    queue.push(root)
+                    while (queue.length !== 0) {
+                        let temp = queue.shift()
+                        if (temp.left !== null) {
+                            queue.push(temp.left)
+                        }
+                        if (temp.right !== null) {
+                            queue.push(temp.right)
+                        }
+                        arrayOfValues.push(temp.data)
                     }
-                    if (temp.right !== null) {
-                        queue.push(temp.right)
+                    return arrayOfValues
+                } else {
+                    let queue = [];
+                    let arrayOfValues = [];
+                    queue.push(root)
+                    while (queue.length !== 0) {
+                        let temp = queue.shift()
+                        if (temp.left !== null) {
+                            queue.push(temp.left)
+                        }
+                        if (temp.right !== null) {
+                            queue.push(temp.right)
+                        }
+                        arrayOfValues.push(callback(temp.data))
                     }
-                     arrayOfValues.push(callback(temp.data))
+                    return arrayOfValues
                 }
-                return arrayOfValues
             }
-        }
-        multiplyByTwo(x) {
-            return x * 2
-    }
-        inOrder(root, anarray = [], callback) {
-            if (!callback) {
-            if (root !== null) {
-                this.inOrder(root.left, anarray)
-                anarray.push(root.data)
-                this.inOrder(root.right, anarray)
+            multiplyByTwo(x) {
+                return x * 2
+            }
+            inOrder(root, anarray = [], callback) {
+                if (!callback) {
+                if (root !== null) {
+                    this.inOrder(root.left, anarray)
+                    anarray.push(root.data)
+                    this.inOrder(root.right, anarray)
+                } else {
+                    return
+                }   
+                return anarray;
+                } else {
+                if (root !== null) {
+                    this.inOrder(root.left, anarray, callback)
+                    anarray.push(callback(root.data))
+                    this.inOrder(root.right, anarray, callback)
+                } else {
+                    return
+                }
+                return anarray;
+                }
+            }
+            preOrder(root, anarray= [], callback) {
+                if (!callback) {
+                if (root !== null) {
+                    anarray.push(root.data)
+                    this.preOrder(root.left, anarray)
+                    this.preOrder(root.right, anarray)
+                } else {
+                    return
+                }
+                return anarray;
             } else {
-                return
-            }   
-            return anarray;
+                if (root !== null) {
+                    anarray.push(callback(root.data))
+                    this.preOrder(root.left, anarray, callback)
+                    this.preOrder(root.right, anarray, callback)
+                } else {
+                    return
+                }
+                return anarray;
+                }
+            }
+            postOrder(root, anarray = [], callback) {
+                if (!callback) {
+                if (root !== null) {
+                    this.postOrder(root.left, anarray)
+                    this.postOrder(root.right, anarray)
+                    anarray.push(root.data)
+                } else {
+                    return
+                }
+                return anarray;
             } else {
-            if (root !== null) {
-                this.inOrder(root.left, anarray, callback)
-                anarray.push(callback(root.data))
-                this.inOrder(root.right, anarray, callback)
-            } else {
-                return
+                if (root !== null) {
+                    this.postOrder(root.left, anarray, callback)
+                    this.postOrder(root.right, anarray, callback)
+                    anarray.push(callback(root.data))
+                } else {
+                    return
+                }
+                return anarray;
+                }
             }
-            return anarray;
-            }
-        }
-        preOrder(root, anarray= [], callback) {
-            if (!callback) {
-            if (root !== null) {
-                anarray.push(root.data)
-                this.preOrder(root.left, anarray)
-                this.preOrder(root.right, anarray)
-            } else {
-                return
-            }
-            return anarray;
-        } else {
-            if (root !== null) {
-                anarray.push(callback(root.data))
-                this.preOrder(root.left, anarray, callback)
-                this.preOrder(root.right, anarray, callback)
-            } else {
-                return
-            }
-            return anarray;
-            }
-        }
-        postOrder(root, anarray = [], callback) {
-            if (!callback) {
-            if (root !== null) {
-                this.postOrder(root.left, anarray)
-                this.postOrder(root.right, anarray)
-                anarray.push(root.data)
-            } else {
-                return
-            }
-            return anarray;
-        } else {
-            if (root !== null) {
-                this.postOrder(root.left, anarray, callback)
-                this.postOrder(root.right, anarray, callback)
-                anarray.push(callback(root.data))
-            } else {
-                return
-            }
-            return anarray;
-            }
-        }
-        heightOfTree(root) {
-        if (root == null) {
-            return -1
-        } 
-            let left = this.heightOfTree(root.left)
-            let right = this.heightOfTree(root.right)
-            if (left > right) {
-                return left + 1
-            } else {
-                return right + 1
-            }
-            return
-        }
-        depthOfNode(root, value) {
+            heightOfTree(root) {
             if (root == null) {
                 return -1
-            }
-            if (root.data == value) {
-                return 0
-            }
-            if (root.data > value) {
-                return this.depthOfNode(root.left, value) + 1
-            }
-            if (root.data < value) {
-                 return this.depthOfNode(root.right, value) + 1
-            }
-            return null
-        }
-        heightOfNode(root, value) {
-            if (this.findValue(root, value) !== null) {
-                return this.heightOfTree(root) - this.depthOfNode(root, value)
-            }
-            return null
-        }
-        isBalanced(root) {
-            if (root == null) {
+            } 
+                let left = this.heightOfTree(root.left)
+                let right = this.heightOfTree(root.right)
+                if (left > right) {
+                    return left + 1
+                } else {
+                    return right + 1
+                }
                 return
             }
-            if (this.heightOfTree(root.left) > this.heightOfNode(root.right)) {
-                let difference = (this.heightOfTree(root.left) - this.heightOfTree(root.right))
-                if (difference > 1) {
-                    return false
-                } else {
-                    return true
+            depthOfNode(root, value) {
+                if (root == null) {
+                    return -1
                 }
-            } else {
-                let difference = (this.heightOfTree(root.right) - this.heightOfTree(root.left))
-                if (difference > 1) {
-                    return false
-                } else {
-                    return true
+                if (root.data == value) {
+                    return 0
+                }
+                if (root.data > value) {
+                    return this.depthOfNode(root.left, value) + 1
+                }
+                if (root.data < value) {
+                    return this.depthOfNode(root.right, value) + 1
+                }
+                return null
+            }
+            heightOfNode(root, value) {
+                if (this.findValue(root, value) !== null) {
+                    return this.heightOfTree(root) - this.depthOfNode(root, value)
+                }
+                return null
+            }
+            isBalanced(root) {
+                if (root == null) {
+                    return
+                }
+                let left = this.heightOfTree(root.left)
+                let right = this.heightOfTree(root.right)
+                left = left + 1
+                right = right + 1
+                if (left >= right) {
+                    let difference = (left - right)
+                    console.log(left)
+                    console.log(right)
+                    console.log(difference)
+                    if (difference <= 1) {
+                        return true
+                    } else {
+                        return false
+                    }
+                } if (left <= right) {
+                    let difference = (right - left)
+                    console.log(left)
+                    console.log(right)
+                    console.log(difference)
+                    if (difference <= 1) {
+                        return true
+                    } else {
+                        return false
+                    }
+                }
+                return
+            }
+            rebalanceTree(root) {
+                if (root == null) {
+                    return null
+                }
+                if (this.isBalanced(root) === false) {
+                    let rebalancedTree = this.inOrder(root)
+                    this.buildTree(rebalancedTree)
+                    return this.prettyPrint(this.buildTree(rebalancedTree))
+                }
+                else {
+                    return null
                 }
             }
         }
-        rebalanceTree(root) {
-            if (root == null) {
-                return null
+        let anArray = [];
+        const getRandomArray = (x) => {
+            for (let i = 0; i < x; i++) {
+                anArray.push(Math.floor(Math.random() *  100))
             }
-            if (this.isBalanced(root) === false) {
-                let rebalancedTree = this.inOrder(root)
-                this.buildTree(rebalancedTree)
-                return this.prettyPrint(this.buildTree(rebalancedTree))
-            }
-            else {
-                return null
-            }
+            return anArray;
         }
-}
+        getRandomArray(Math.ceil(Math.random() *  20))
+        let tree = new Tree;
+        tree.buildTree(anArray)
+        console.log(tree.isBalanced(tree.root))
+        tree.prettyPrint(tree.root)
+        console.log(tree.levelOrder(tree.root))
+        console.log(tree.preOrder(tree.root))
+        console.log(tree.postOrder(tree.root))
+        console.log(tree.inOrder(tree.root))
+        tree.insertNode(tree.root, Math.floor(Math.random() * (101) + 100))
+        tree.insertNode(tree.root, Math.floor(Math.random() * (101) + 100))
+        tree.insertNode(tree.root, Math.floor(Math.random() * (101) + 100))
+        tree.insertNode(tree.root, Math.floor(Math.random() * (101) + 100))
+        tree.insertNode(tree.root, Math.floor(Math.random() * (101) + 100))
+        tree.prettyPrint(tree.root)
+        console.log(tree.isBalanced(tree.root))
+
         
     
     
-
+/*
  let myarray = [5, 11, 2, 6, 13, 8, 1, 15, 15, 23, 19]
   let tree = new Tree;
   tree.removeDupes(myarray);
   tree.sortArray(tree.arr)
   tree.buildTree(tree.arr)
+  */
     </script>
 </body>
 </html>
