@@ -333,6 +333,7 @@
                 }
             }
         }
+        
         let anArray = [];
         const getRandomArray = (x) => {
             for (let i = 0; i < x; i++) {
@@ -356,9 +357,12 @@
         tree.insertNode(tree.root, Math.floor(Math.random() * (101) + 100))
         tree.prettyPrint(tree.root)
         console.log(tree.isBalanced(tree.root))
-
-        
-    
+        tree.rebalanceTree(tree.root)
+        console.log(tree.isBalanced(tree.root))
+        console.log(tree.levelOrder(tree.root))
+        console.log(tree.preOrder(tree.root))
+        console.log(tree.postOrder(tree.root))
+        console.log(tree.inOrder(tree.root))
     
 /*
  let myarray = [5, 11, 2, 6, 13, 8, 1, 15, 15, 23, 19]
